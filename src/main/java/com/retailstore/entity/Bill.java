@@ -17,9 +17,9 @@ import java.util.List;
 public class Bill {
 
     @Id
-    private Long id;
+    private long id;
 
-    private User user;
+    private long userId;
 
     private List<Item> items;
 }

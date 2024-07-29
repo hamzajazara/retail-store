@@ -5,12 +5,13 @@ import com.retailstore.entity.Item;
 import com.retailstore.entity.User;
 import com.retailstore.repository.BillRepository;
 import com.retailstore.service.BillService;
+import com.retailstore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.retailstore.constant.ItemType.GROCERY;
@@ -20,6 +21,7 @@ import static com.retailstore.constant.ItemType.GROCERY;
 public class BillServiceImpl implements BillService {
 
     private final BillRepository billRepository;
+    private final UserService userService;
 
     public Bill get(long id, long userId) {
         return billRepository.findByIdAndUserId(id, userId)
@@ -29,14 +31,16 @@ public class BillServiceImpl implements BillService {
     @Override
     public double calculateNetPayableAmount(long billId, long userId) {
         Bill bill = get(billId, userId);
+        User user = userService.get(userId);
         List<Item> items = bill.getItems();
+
 
         double totalAmount = calculateTotalAmount(items);
         double groceryAmount = calculateGroceryAmount(items);
 
         // The percentage based discounts do not apply on groceries.
         double nonGroceryAmount = totalAmount - groceryAmount;
-        double percentageDiscount = calculatePercentageDiscount(bill.getUser(), nonGroceryAmount);
+        double percentageDiscount = calculatePercentageDiscount(user, nonGroceryAmount);
 
         //  Every $100 on the bill, there would be a $ 5 discount.
         double additionalDiscount = calculateAdditionalDiscount(totalAmount);
@@ -62,7 +66,7 @@ public class BillServiceImpl implements BillService {
             case EMPLOYEE -> 0.30 * nonGroceryAmount;
             case AFFILIATE -> 0.10 * nonGroceryAmount;
             case CUSTOMER -> {
-                if (user.getCreatedAt().isBefore(LocalDateTime.now().minusYears(2))) {
+                if (user.getCreatedAt().isBefore(LocalDate.now().minusYears(2))) {
                     yield 0.05 * nonGroceryAmount;
                 }
                 yield 0;

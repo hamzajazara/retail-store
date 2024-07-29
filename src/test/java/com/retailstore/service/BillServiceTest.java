@@ -6,6 +6,7 @@ import com.retailstore.entity.Bill;
 import com.retailstore.entity.Item;
 import com.retailstore.entity.User;
 import com.retailstore.repository.BillRepository;
+import com.retailstore.repository.UserRepository;
 import com.retailstore.service.impl.BillServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,32 +34,36 @@ public class BillServiceTest {
     @InjectMocks
     private BillServiceImpl billService;
 
+    @Mock
+    private UserService userService;
+    
     private List<Item> items;
 
     @BeforeEach
     public void setup() {
         items = Arrays.asList(
-                new Item(1L, 200.0, ItemType.GROCERY),
-                new Item(2L, 100.0, ItemType.GROCERY),
-                new Item(3L, 150.0, ItemType.OTHER),
-                new Item(4L, 50.0, ItemType.OTHER),
-                new Item(5L, 300.0, ItemType.OTHER)
+                new Item(1, 200.0, ItemType.GROCERY),
+                new Item(2, 100.0, ItemType.GROCERY),
+                new Item(3, 150.0, ItemType.OTHER),
+                new Item(4, 50.0, ItemType.OTHER),
+                new Item(5, 300.0, ItemType.OTHER)
         );
     }
 
     @Test
     public void testCalculateNetPayableForEmployee() {
         User employeeUser = new User();
-        employeeUser.setId(1L);
+        employeeUser.setId(1);
         employeeUser.setType(UserType.EMPLOYEE);
-        employeeUser.setCreatedAt(LocalDateTime.now().minusYears(3));
+        employeeUser.setCreatedAt(LocalDate.now().minusYears(3));
 
-        Bill employeeUserBill = new Bill(1L, employeeUser, items);
+        Bill employeeUserBill = new Bill(1, 1, items);
 
-        when(billRepository.findByIdAndUserId(1L, 1L))
+        when(userService.get(1)).thenReturn(employeeUser);
+        when(billRepository.findByIdAndUserId(1, 1))
                 .thenReturn(Optional.of(employeeUserBill));
 
-        double result = billService.calculateNetPayableAmount(1L, 1L);
+        double result = billService.calculateNetPayableAmount(1, 1);
 
         assertEquals(610, result);
     }
@@ -65,16 +71,17 @@ public class BillServiceTest {
     @Test
     public void testCalculateNetPayableForAffiliate() {
         User affiliateUser = new User();
-        affiliateUser.setId(2L);
+        affiliateUser.setId(2);
         affiliateUser.setType(UserType.AFFILIATE);
-        affiliateUser.setCreatedAt(LocalDateTime.now().minusYears(3));
+        affiliateUser.setCreatedAt(LocalDate.now().minusYears(3));
 
-        Bill affiliateUserBill = new Bill(2L, affiliateUser, items);
+        Bill affiliateUserBill = new Bill(2, 2, items);
 
-        when(billRepository.findByIdAndUserId(2L, 2L))
+        when(userService.get(2)).thenReturn(affiliateUser);
+        when(billRepository.findByIdAndUserId(2, 2))
                 .thenReturn(Optional.of(affiliateUserBill));
 
-        double result = billService.calculateNetPayableAmount(2L, 2L);
+        double result = billService.calculateNetPayableAmount(2, 2);
 
         assertEquals(710.0, result);
     }
@@ -83,16 +90,17 @@ public class BillServiceTest {
     public void testCalculateNetPayableForNewCustomer() {
 
         User customerUser = new User();
-        customerUser.setId(3L);
+        customerUser.setId(3);
         customerUser.setType(UserType.CUSTOMER);
-        customerUser.setCreatedAt(LocalDateTime.now());
+        customerUser.setCreatedAt(LocalDate.now());
 
-        Bill customerUserBill = new Bill(3L, customerUser, items);
+        Bill customerUserBill = new Bill(3, 3, items);
 
-        when(billRepository.findByIdAndUserId(3L, 3L))
+        when(userService.get(3)).thenReturn(customerUser);
+        when(billRepository.findByIdAndUserId(3, 3))
                 .thenReturn(Optional.of(customerUserBill));
 
-        double result = billService.calculateNetPayableAmount(3L, 3L);
+        double result = billService.calculateNetPayableAmount(3, 3);
 
         assertEquals(760.0, result);
     }
@@ -101,16 +109,17 @@ public class BillServiceTest {
     public void testNetPayableAmountForCustomerMoreThanTwoYears() {
 
         User customerUser = new User();
-        customerUser.setId(4L);
+        customerUser.setId(4);
         customerUser.setType(UserType.CUSTOMER);
-        customerUser.setCreatedAt(LocalDateTime.now().minusYears(3));
+        customerUser.setCreatedAt(LocalDate.now().minusYears(3));
 
-        Bill customerUserBill = new Bill(4L, customerUser, items);
+        Bill customerUserBill = new Bill(4, 4, items);
 
-        when(billRepository.findByIdAndUserId(4L, 4L))
+        when(userService.get(4)).thenReturn(customerUser);
+        when(billRepository.findByIdAndUserId(4, 4))
                 .thenReturn(Optional.of(customerUserBill));
 
-        double result = billService.calculateNetPayableAmount(4L, 4L);
+        double result = billService.calculateNetPayableAmount(4, 4);
 
         assertEquals(735.0, result);
     }
@@ -119,16 +128,17 @@ public class BillServiceTest {
     public void testNetPayableAmountForCustomerWithoutAnyItems() {
 
         User customerUser = new User();
-        customerUser.setId(5L);
+        customerUser.setId(5);
         customerUser.setType(UserType.CUSTOMER);
-        customerUser.setCreatedAt(LocalDateTime.now().minusYears(3));
+        customerUser.setCreatedAt(LocalDate.now().minusYears(3));
 
-        Bill customerUserBill = new Bill(5L, customerUser, new ArrayList<>());
+        Bill customerUserBill = new Bill(5, 5, new ArrayList<>());
 
-        when(billRepository.findByIdAndUserId(5L, 5L))
+        when(userService.get(5)).thenReturn(customerUser);
+        when(billRepository.findByIdAndUserId(5, 5))
                 .thenReturn(Optional.of(customerUserBill));
 
-        double result = billService.calculateNetPayableAmount(5L, 5L);
+        double result = billService.calculateNetPayableAmount(5, 5);
 
         assertEquals(0.0, result);
     }
@@ -137,16 +147,17 @@ public class BillServiceTest {
     public void testNetPayableAmountForCustomerWithOneItem() {
 
         User customerUser = new User();
-        customerUser.setId(6L);
+        customerUser.setId(6);
         customerUser.setType(UserType.CUSTOMER);
-        customerUser.setCreatedAt(LocalDateTime.now());
+        customerUser.setCreatedAt(LocalDate.now());
 
-        Bill customerUserBill = new Bill(6L, customerUser, List.of(new Item(1L, 200.0, ItemType.GROCERY)));
+        Bill customerUserBill = new Bill(6, 6, List.of(new Item(1, 200.0, ItemType.GROCERY)));
 
-        when(billRepository.findByIdAndUserId(6L, 6L))
+        when(userService.get(6)).thenReturn(customerUser);
+        when(billRepository.findByIdAndUserId(6, 6))
                 .thenReturn(Optional.of(customerUserBill));
 
-        double result = billService.calculateNetPayableAmount(6L, 6L);
+        double result = billService.calculateNetPayableAmount(6, 6);
 
         assertEquals(190.0, result);
     }

@@ -41,10 +41,10 @@ then,
 To check and call the api with an examples:
 
 ### Employee Discount Example
-`curl -u user:password -X GET "http://localhost:8080/api/net-payable-amount?billId=1&userId=1" -H "accept: application/json"`
+`curl -u user:password -X GET "http://localhost:8080/api/bill/amount?billId=1&userId=1" -H "accept: application/json"`
 
 ### Affiliate Discount Example
-`curl -u user:password -X GET "http://localhost:8080/api/net-payable-amount?billId=2&userId=2" -H "accept: application/json"`
+`curl -u user:password -X GET "http://localhost:8080/api/bill/amount?billId=2&userId=2" -H "accept: application/json"`
 
 ### Customer Discount Example
-`curl -u user:password -X GET "http://localhost:8080/api/net-payable-amount?billId=3&userId=3" -H "accept: application/json"`
+`curl -u user:password -X GET "http://localhost:8080/api/bill/amount?billId=3&userId=3" -H "accept: application/json"`

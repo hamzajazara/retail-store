@@ -1,7 +1,10 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: Retail Store
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017/retail_store
+      uri: mongodb://root:password@localhost:27017/retail_store?authSource=admin

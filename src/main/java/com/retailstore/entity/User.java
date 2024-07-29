@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Setter
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 public class User {
 
     @Id
-    private Long id;
+    private long id;
 
     private String username;
 
@@ -27,6 +28,5 @@ public class User {
 
     private UserType type;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 }
