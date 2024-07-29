@@ -1,29 +1,59 @@
 [
   {
-    "_id": {"$oid": "60c72b2f8f1c4e3d4f0b5e26"},
+    "_id": {
+      "$oid": "60c72b2f8f1c4e3d4f0b5e26"
+    },
     "billId": 1,
     "userId": 1,
     "items": [
-      {"name": "item1", "type": "ELECTRONICS", "price": 200.0},
-      {"name": "item2", "type": "GROCERY", "price": 100.0}
+      {
+        "name": "item1",
+        "type": "ELECTRONICS",
+        "price": 200.0
+      },
+      {
+        "name": "item2",
+        "type": "GROCERY",
+        "price": 100.0
+      }
     ]
   },
   {
-    "_id": {"$oid": "60c72b2f8f1c4e3d4f0b5e27"},
+    "_id": {
+      "$oid": "60c72b2f8f1c4e3d4f0b5e27"
+    },
     "billId": 2,
     "userId": 2,
     "items": [
-      {"name": "item3", "type": "OTHER", "price": 150.0},
-      {"name": "item4", "type": "GROCERY", "price": 50.0}
+      {
+        "name": "item3",
+        "type": "OTHER",
+        "price": 150.0
+      },
+      {
+        "name": "item4",
+        "type": "GROCERY",
+        "price": 50.0
+      }
     ]
   },
   {
-    "_id": {"$oid": "60c72b2f8f1c4e3d4f0b5e28"},
+    "_id": {
+      "$oid": "60c72b2f8f1c4e3d4f0b5e28"
+    },
     "billId": 3,
     "userId": 3,
     "items": [
-      {"name": "item5", "type": "OTHER", "price": 300.0},
-      {"name": "item6", "type": "GROCERY", "price": 200.0}
+      {
+        "name": "item5",
+        "type": "OTHER",
+        "price": 300.0
+      },
+      {
+        "name": "item6",
+        "type": "GROCERY",
+        "price": 200.0
+      }
     ]
   }
 ]

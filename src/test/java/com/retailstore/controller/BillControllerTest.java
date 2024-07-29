@@ -6,7 +6,6 @@ import com.retailstore.entity.Bill;
 import com.retailstore.entity.Item;
 import com.retailstore.entity.User;
 import com.retailstore.repository.BillRepository;
-import com.retailstore.service.BillService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

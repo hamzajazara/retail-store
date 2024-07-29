@@ -1,18 +1,24 @@
 [
   {
-    "_id": {"$oid": "60c72b2f8f1c4e3d4f0b5e23"},
+    "_id": {
+      "$oid": "60c72b2f8f1c4e3d4f0b5e23"
+    },
     "id": 1,
     "type": "EMPLOYEE",
     "createdAt": "2019-01-01T00:00:00Z"
   },
   {
-    "_id": {"$oid": "60c72b2f8f1c4e3d4f0b5e24"},
+    "_id": {
+      "$oid": "60c72b2f8f1c4e3d4f0b5e24"
+    },
     "id": 2,
     "type": "AFFILIATE",
     "createdAt": "2020-01-01T00:00:00Z"
   },
   {
-    "_id": {"$oid": "60c72b2f8f1c4e3d4f0b5e25"},
+    "_id": {
+      "$oid": "60c72b2f8f1c4e3d4f0b5e25"
+    },
     "id": 3,
     "type": "CUSTOMER",
     "createdAt": "2018-01-01T00:00:00Z"
